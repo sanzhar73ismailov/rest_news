@@ -23,7 +23,7 @@ for($i = count($arrData); $i > 0; $i--){
 $item = $arrData[$i-1];
    echo "{$item['date']} : {$item['text']} \n";
    $request['ann_date'] = $item['date'];
-   $request['ann_text'] = $item['text'];
+   $request['ann_text'] = trim($item['text']);
    $request['deleted'] = 0;
    $res = createAnnouncement($request);
    if(!$res) {

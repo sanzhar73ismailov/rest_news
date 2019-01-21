@@ -1,0 +1,103 @@
+</!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<title></title>
+	<script>
+	    Date.createFromMysql = function(mysql_string) { 
+		   var t, result = null;
+		   if( typeof mysql_string === 'string' ) {
+		      t = mysql_string.split(/[- :]/);
+		      //when t[3], t[4] and t[5] are missing they defaults to zero
+		      result = new Date(t[0], t[1] - 1, t[2], t[3] || 0, t[4] || 0, t[5] || 0);          
+		   }
+		   return result;
+        }
+
+		$(document).ready(function(){
+			$("#showOld").click(function() {
+				 $("#newsOld").fadeToggle("slow");
+				 $(this).text($(this).text() == "Отобразить" ? "Скрыть" : "Отобразить");
+			});
+		  
+
+		  $.getJSON("api?action=get&id=all", function(data){
+		  	$.each( data, function( key, val ) {
+		  		//console.log(val.ann_date);
+		  		//var date = Date.parse(val.ann_date);
+		  		var date = Date.createFromMysql(val.ann_date);
+		  		var announcementYear = date.getFullYear();
+		  		var currYear = new Date(Date.now()).getFullYear();
+		  		//console.log("date: " + date);
+		  		var options = {
+					  year: 'numeric',
+					  month: 'long',
+					  day: 'numeric',
+					 
+					};
+
+				//	alert( date.toLocaleString("ru", options) );
+		  		var text = val.ann_text.replace(/\n/g, "<p/>");
+		  		var template = $("#templateForannouncements").html();
+				template = template.replace("{date}", date.toLocaleString("ru", options));
+				template = template.replace("{text}", text);
+				 //console.log(template);
+				if (announcementYear >= (currYear-1)) {
+					$("#news").append(template);
+				}else{
+					$("#newsOld").append(template);
+				}
+
+				 
+				});
+		  });
+	    });
+		/*
+		fetch("api/test.php").then(response => {
+
+			  console.log(response.status);
+			  // → 200
+			  console.log(response.headers.get("Content-Type"));
+			  // → text/plain
+			  console.log(Object.keys(response));
+
+			  for (variable in response) {
+			  	console.log(variable + "=" + response[variable]);
+			  }
+
+			  console.log("JSON="+JSON.stringify(response.json()));
+			});
+			*/
+
+		fetch("api/test.php")
+  .then(resp => resp.text())
+  .then(text => console.log(text));
+// → This is the content of data.txt
+
+
+	</script>
+</head>
+<body>
+	<div id="templateForannouncements" style="display:none">
+		<div class="paragraph_style_6">
+			<h5>{date}</h5>
+			<h4>Добрый день, всем!</h4>
+			{text}
+			<br/>Языковые Курсы Исмаилова. 
+			<a href="http://melsireta.kz/ils/Nas_adres.html">Наш адрес</a>
+			<div>email: melsireta@yahoo.com
+				<br/>Телефоны: 971-26-45 (с городских номеров Алматы); +7(708)971-26-45; +7 777-264-92-35
+			</div>
+		</div>
+	</div>
+	<div id="id6" style="left: 12px;" class="style_SkipStroke_5 shape-with-text">
+
+		<div id="news"></div>
+
+		<h2>Новости из архива</h2>
+		<button id="showOld">Отобразить</button>
+		<div id="newsOld" style="display:none;"></div>
+    </div>
+
+</body>
+</html>

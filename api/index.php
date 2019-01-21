@@ -97,7 +97,7 @@ function createAnnouncement($request){
 		$conn = new PDO(sprintf("mysql:host=%s;dbname=%s", HOST, DB), USER, PASS);
 		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$sql = "INSERT INTO data (ann_date, ann_text, deleted) VALUES ('%s', '%s', '%s')";
-		$sql = sprintf($sql, $request['ann_date'], $request['ann_text'], $request['deleted']);
+		$sql = sprintf($sql, $request['ann_date'], trim($request['ann_text']), $request['deleted']);
        	$conn->exec($sql);
 		return true;
 	} catch(PDOException $e) {
@@ -109,7 +109,7 @@ function updateAnnouncement($id, $request){
 		$conn = new PDO(sprintf("mysql:host=%s;dbname=%s", HOST, DB), USER, PASS);
 		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$sql = "UPDATE data SET ann_date='%s', ann_text='%s', deleted='%s' WHERE id='%s'";
-		$sql = sprintf($sql, $request['ann_date'], $request['ann_text'], $request['deleted'], $id);
+		$sql = sprintf($sql, $request['ann_date'], trim($request['ann_text']), $request['deleted'], $id);
        	$conn->exec($sql);
 		return true;
 	} catch(PDOException $e) {
