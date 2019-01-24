@@ -1,8 +1,7 @@
 </!DOCTYPE html>
 <html>
-<head>
+<head><title></title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<title></title>
 	<script>
 	    Date.createFromMysql = function(mysql_string) { 
 		   var t, result = null;
@@ -52,29 +51,6 @@
 				});
 		  });
 	    });
-		/*
-		fetch("api/test.php").then(response => {
-
-			  console.log(response.status);
-			  // → 200
-			  console.log(response.headers.get("Content-Type"));
-			  // → text/plain
-			  console.log(Object.keys(response));
-
-			  for (variable in response) {
-			  	console.log(variable + "=" + response[variable]);
-			  }
-
-			  console.log("JSON="+JSON.stringify(response.json()));
-			});
-			*/
-
-		fetch("api/test.php")
-  .then(resp => resp.text())
-  .then(text => console.log(text));
-// → This is the content of data.txt
-
-
 	</script>
 </head>
 <body>
